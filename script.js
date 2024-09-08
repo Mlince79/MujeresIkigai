@@ -140,4 +140,52 @@ document.addEventListener("DOMContentLoaded", function() {
     function loadReviewIntoForm(review, index) {
         document.getElementById('name').value = review.name;
         document.getElementById('description').value = review.description;
-       
+        document.getElementById('website').value = review.website;
+        document.getElementById('instagram').value = review.instagram;
+        document.getElementById('linkedin').value = review.linkedin;
+        document.getElementById('facebook').value = review.facebook;
+        document.getElementById('spotify').value = review.spotify;
+        reviewForm.setAttribute('data-edit-index', index);
+    }
+
+    // Update review with edited information
+    function updateReview(review) {
+        review.name = document.getElementById('name').value;
+        review.description = document.getElementById('description').value;
+        review.website = document.getElementById('website').value;
+        review.instagram = document.getElementById('instagram').value;
+        review.linkedin = document.getElementById('linkedin').value;
+        review.facebook = document.getElementById('facebook').value;
+        review.spotify = document.getElementById('spotify').value;
+        const imageUpload = document.getElementById('imageUpload').files[0];
+        if (imageUpload) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                review.imageData = e.target.result;
+            };
+            reader.readAsDataURL(imageUpload);
+        }
+        // Refresh the gallery to reflect changes
+        gallery.innerHTML = '';
+        loadReviews();
+    }
+
+    // Handle language toggle
+    toggleLanguage.addEventListener('click', function() {
+        const isEnglish = document.documentElement.lang === 'en';
+
+        document.documentElement.lang = isEnglish ? 'sv' : 'en';
+        document.querySelector('h1').textContent = isEnglish ? 'Mujeres Ikigai' : 'Mujeres Ikigai';
+        document.querySelector('p').textContent = isEnglish ? 'Lyfter fram kvinnor som lever enligt Ikigai-modellen' : 'Highlighting women who live according to the Ikigai model';
+        document.querySelector('h2').textContent = isEnglish ? 'Ladda upp en recension' : 'Upload a Review';
+        toggleLanguage.textContent = isEnglish ? 'English' : 'Svenska';
+        document.querySelector('input[type="text"]').placeholder = isEnglish ? 'Kvinnans namn' : 'Woman\'s Name';
+        document.querySelector('textarea').placeholder = isEnglish ? 'Skriv din recension här...' : 'Write your review here...';
+        document.querySelector('input[type="url"]').placeholder = isEnglish ? 'Hemsida (valfritt)' : 'Website (optional)';
+        document.querySelectorAll('input[type="url"]')[1].placeholder = isEnglish ? 'Instagram (valfritt)' : 'Instagram (optional)';
+        document.querySelectorAll('input[type="url"]')[2].placeholder = isEnglish ? 'LinkedIn (valfritt)' : 'LinkedIn (optional)';
+        document.querySelectorAll('input[type="url"]')[3].placeholder = isEnglish ? 'Facebook (valfritt)' : 'Facebook (optional)';
+        document.querySelectorAll('input[type="url"]')[4].placeholder = isEnglish ? 'Spotify (valfritt)' : 'Spotify (optional)';
+        document.querySelector('button[type="submit"]').textContent = isEnglish ? 'Ladda upp recension' : 'Upload Review';
+    });
+});
