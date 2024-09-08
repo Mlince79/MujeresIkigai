@@ -10,10 +10,10 @@ document.addEventListener("DOMContentLoaded", function() {
     reviewForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        const reviewIndex = reviewForm.getAttribute('data-edit-index');
         const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+        const reviewIndex = reviewForm.getAttribute('data-edit-index');
 
-        if (reviewIndex !== null) {
+        if (reviewIndex !== null && reviewIndex !== '') {
             // Editing an existing review
             const review = reviews[reviewIndex];
             updateReview(review);
@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         reviewForm.reset();
+        reviewForm.removeAttribute('data-edit-index');
     });
 
     // Load reviews from localStorage
@@ -139,35 +140,4 @@ document.addEventListener("DOMContentLoaded", function() {
     function loadReviewIntoForm(review, index) {
         document.getElementById('name').value = review.name;
         document.getElementById('description').value = review.description;
-        document.getElementById('website').value = review.website;
-        document.getElementById('instagram').value = review.instagram;
-        document.getElementById('linkedin').value = review.linkedin;
-        document.getElementById('facebook').value = review.facebook;
-        document.getElementById('spotify').value = review.spotify;
-        document.getElementById('imageUpload').value = '';
-        reviewForm.setAttribute('data-edit-index', index);
-    }
-
-    // Handle language toggle
-    toggleLanguage.addEventListener('click', function() {
-        const isEnglish = document.documentElement.lang === 'en';
-
-        document.documentElement.lang = isEnglish ? 'sv' : 'en';
-        document.querySelector('h1').textContent = isEnglish ? 'Mujeres Ikigai' : 'Mujeres Ikigai';
-        document.querySelector('p').textContent = isEnglish ? 'Lyfter fram kvinnor som lever enligt Ikigai-modellen' : 'Highlighting women who live according to the Ikigai model';
-        document.querySelector('h2').textContent = isEnglish ? 'Ladda upp en recension' : 'Upload a Review';
-        toggleLanguage.textContent = isEnglish ? 'English' : 'Svenska';
-        document.querySelector('input[type="text"]').placeholder = isEnglish ? 'Kvinnans namn' : 'Woman\'s Name';
-        document.querySelector('textarea').placeholder = isEnglish ? 'Skriv din recension här...' : 'Write your review here...';
-        document.querySelector('input[type="url"]').placeholder = isEnglish ? 'Hemsida (valfritt)' : 'Website (optional)';
-        document.querySelectorAll('input[type="url"]')[1].placeholder = isEnglish ? 'Instagram (valfritt)' : 'Instagram (optional)';
-        document.querySelectorAll('input[type="url"]')[2].placeholder = isEnglish ? 'LinkedIn (valfritt)' : 'LinkedIn (optional)';
-        document.querySelectorAll('input[type="url"]')[3].placeholder = isEnglish ? 'Facebook (valfritt)' : 'Facebook (optional)';
-        document.querySelectorAll('input[type="url"]')[4].placeholder = isEnglish ? 'Spotify (valfritt)' : 'Spotify (optional)';
-        document.querySelector('button[type="submit"]').textContent = isEnglish ? 'Ladda upp recension' : 'Upload Review';
-    });
-
-    function updateReview(review) {
-        review.name = document.getElementById('name').value;
-        review.description = document.getElementById('description').value;
-        review.website = document.getElementBy
+       
