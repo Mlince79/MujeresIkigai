@@ -10,60 +10,60 @@ document.addEventListener("DOMContentLoaded", function() {
     reviewForm.addEventListener('submit', function(event) {
         event.preventDefault();
 
-        // Get form data
-        const name = document.getElementById('name').value;
-        const description = document.getElementById('description').value;
-        const website = document.getElementById('website').value;
-        const instagram = document.getElementById('instagram').value;
-        const linkedin = document.getElementById('linkedin').value;
-        const facebook = document.getElementById('facebook').value;
-        const spotify = document.getElementById('spotify').value;
-        const imageUpload = document.getElementById('imageUpload').files[0];
+        const reviewIndex = reviewForm.getAttribute('data-edit-index');
+        const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
 
-        // Convert image to Base64 string
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const imageData = e.target.result;
+        if (reviewIndex !== null) {
+            // Editing an existing review
+            const review = reviews[reviewIndex];
+            updateReview(review);
+            reviews[reviewIndex] = review;
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+            reviewForm.removeAttribute('data-edit-index');
+        } else {
+            // Adding a new review
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const website = document.getElementById('website').value;
+            const instagram = document.getElementById('instagram').value;
+            const linkedin = document.getElementById('linkedin').value;
+            const facebook = document.getElementById('facebook').value;
+            const spotify = document.getElementById('spotify').value;
+            const imageUpload = document.getElementById('imageUpload').files[0];
 
-            // Create a new review object
-            const review = {
-                name,
-                description,
-                website,
-                instagram,
-                linkedin,
-                facebook,
-                spotify,
-                imageData
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageData = e.target.result;
+
+                const review = {
+                    name,
+                    description,
+                    website,
+                    instagram,
+                    linkedin,
+                    facebook,
+                    spotify,
+                    imageData
+                };
+
+                reviews.push(review);
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+                displayReview(review, reviews.length - 1);
             };
+            reader.readAsDataURL(imageUpload);
+        }
 
-            // Save review to localStorage
-            saveReview(review);
-
-            // Display the review on the page
-            displayReview(review);
-        };
-        reader.readAsDataURL(imageUpload);
-
-        // Clear the form
         reviewForm.reset();
     });
-
-    // Save review to localStorage
-    function saveReview(review) {
-        const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
-        reviews.push(review);
-        localStorage.setItem('reviews', JSON.stringify(reviews));
-    }
 
     // Load reviews from localStorage
     function loadReviews() {
         const reviews = JSON.parse(localStorage.getItem('reviews')) || [];
-        reviews.forEach(review => displayReview(review));
+        reviews.forEach((review, index) => displayReview(review, index));
     }
 
     // Display a review on the page
-    function displayReview(review) {
+    function displayReview(review, index) {
         const card = document.createElement('div');
         card.className = 'woman-card';
 
@@ -122,8 +122,30 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         info.appendChild(linksDiv);
+
+        // Add edit button
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.addEventListener('click', function() {
+            loadReviewIntoForm(review, index);
+        });
+        info.appendChild(editButton);
+
         card.appendChild(info);
         gallery.appendChild(card);
+    }
+
+    // Load a review into the form for editing
+    function loadReviewIntoForm(review, index) {
+        document.getElementById('name').value = review.name;
+        document.getElementById('description').value = review.description;
+        document.getElementById('website').value = review.website;
+        document.getElementById('instagram').value = review.instagram;
+        document.getElementById('linkedin').value = review.linkedin;
+        document.getElementById('facebook').value = review.facebook;
+        document.getElementById('spotify').value = review.spotify;
+        document.getElementById('imageUpload').value = '';
+        reviewForm.setAttribute('data-edit-index', index);
     }
 
     // Handle language toggle
@@ -144,4 +166,8 @@ document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll('input[type="url"]')[4].placeholder = isEnglish ? 'Spotify (valfritt)' : 'Spotify (optional)';
         document.querySelector('button[type="submit"]').textContent = isEnglish ? 'Ladda upp recension' : 'Upload Review';
     });
-});
+
+    function updateReview(review) {
+        review.name = document.getElementById('name').value;
+        review.description = document.getElementById('description').value;
+        review.website = document.getElementBy
