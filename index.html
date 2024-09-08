@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mujeres Ikigai</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Mujeres Ikigai</h1>
+        <p>Highlighting women who live according to the Ikigai model</p>
+        <button id="toggleLanguage">Svenska</button>
+    </header>
+
+    <section class="gallery" id="gallery">
+        <!-- Uploaded reviews will be displayed here -->
+    </section>
+
+    <section class="upload-form">
+        <h2>Upload a Review</h2>
+        <form id="reviewForm">
+            <input type="text" id="name" placeholder="Woman's Name" required><br>
+            <textarea id="description" placeholder="Write your review here..." required></textarea><br>
+            <input type="url" id="website" placeholder="Website (optional)"><br>
+            <input type="url" id="instagram" placeholder="Instagram (optional)"><br>
+            <input type="url" id="linkedin" placeholder="LinkedIn (optional)"><br>
+            <input type="url" id="facebook" placeholder="Facebook (optional)"><br>
+            <input type="url" id="spotify" placeholder="Spotify (optional)"><br>
+            <input type="file" id="imageUpload" accept="image/*" required><br>
+            <button type="submit">Upload Review</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Mujeres Ikigai</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
